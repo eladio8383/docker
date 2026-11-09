@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  kali:
+    image: kalilinux/kali-rolling
+    container_name: kali-lab
+    tty: true
+    stdin_open: true
+    network_mode: bridge
+    volumes:
+      - ./workspace:/workspace
+    command: /bin/bash
+
+  web:
+    image: nginx:alpine
+    container_name: web-lab
+    ports:
+      - "8080:80"
+    volumes:
+      - ./workspace/web:/usr/share/nginx/html
+
+  db:
+    image: mysql:8.0
+    container_name: db-lab
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: labdb
+      MYSQL_USER: labuser
+      MYSQL_PASSWORD: labpass
+    ports:
+      - "3306:3306"
